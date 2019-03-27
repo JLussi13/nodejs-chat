@@ -14,14 +14,13 @@ var io = socketIO(server);
 io.on('connection', (socket) => {
     console.log("New User Connected");
 
-    socket.emit('newMessage', {
-        from: 'drakenguard',
-        text: "Hey nigga",
-        createdAt: 123
-    });
-
-    socket.on('createMessage', (newEmail) => {
-        console.log("Message Received: " + JSON.stringify(newEmail));
+    socket.on('createMessage', (message) => {
+        console.log("Message Received: " + JSON.stringify(message));
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        })
     })
 
     socket.on('disconnect', (socket) => {
